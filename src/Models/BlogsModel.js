@@ -24,14 +24,14 @@ const BlogSchema = new mongoose.Schema({
         required: true
     },
     subcategory: { type: [String] },
-    deletedAt: { type: Date },
+    deletedAt: { type: Date, default: null },
     isDeleted: {
         type: Boolean,
         default: false
     },
-    publishedAt: { type: Date },
-    isPublished: { type: Boolean, default: false }
+    publishedAt: { type: Date, default: null },
 
+    isPublished: { type: Boolean, default: false }
 
 }, { timestamps: true });
 

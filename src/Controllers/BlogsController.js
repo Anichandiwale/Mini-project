@@ -52,7 +52,7 @@ const getBlog = async function (req, res) {
       let blogs = await BlogsModel.find({ isDeleted: false, isPublished: true })
 
       if (blogs.length == 0) {
-        return res.status(404).send({ status: false, msg: "No documents are found" })
+        return res.status(404).send({ status: false, msg: "No blogs are found or already deleted" })
       }
       else {
         return res.status(200).send(blogs);
@@ -78,7 +78,7 @@ const getBlog = async function (req, res) {
     let blogDoc = await BlogsModel.find(Obj)
 
     if (blogDoc.length == 0) {
-      return res.status(404).send({ status: false, msg: "blogdoc are not found" })
+      return res.status(404).send({ status: false, msg: "blogdoc are not found or deleted" })
     }
     else {
       res.status(200).send({ status: true, data: blogDoc })
@@ -110,8 +110,6 @@ const updateBlog = async function (req, res) {
       },
       { new: true }
     );
-    if (!dataBlog)
-      return res.status(404).send({ status: false, msg: "dataBlog is not exist" })
 
     res.status(200).send({ status: true, msg: "Document Updated Successfully", data: dataBlog })
   }
@@ -125,11 +123,6 @@ const updateBlog = async function (req, res) {
 const deleteBlogs = async function (req, res) {
   try {
     let blogId = req.params.blogId;
-
-    // let Id = await BlogsModel.findById(blogId);
-    // if (!Id) {
-    //   return res.status(404).send({ status: false, message: "no such blogs exists" });
-    // }
 
     let RemovedBlogs = await BlogsModel.findOneAndUpdate(
       { _id: blogId, isDeleted: false }, { $set: { isDeleted: true, deletedAt: Date.now() } }, { new: true }

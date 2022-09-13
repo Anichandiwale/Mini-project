@@ -7,18 +7,13 @@ const BlogsModel = require("../Models/BlogsModel");
 
 const authenticate = async function (req, res, next) {
     try {
-
-
         let token = req.headers['x-api-key']
         if (!token) { return res.status(400).send({ status: false, msg: "Token must be present" }) }
 
-
         jwt.verify(token, "project1-secrete-key", function (err, decodedToken) {
-
             if (err) {
 
                 return res.status(401).send({ status: false, msg: "Token is invalid" })
-
             }
             else {
                 req.token = decodedToken
@@ -37,24 +32,17 @@ const authenticate = async function (req, res, next) {
 }
 
 
-
-
-
-//---------------------------------------------Authorization------------------------------//
+//---------------------------------------------AuthorizationByQuery---------------------------------//
 
 const auth = async function (req, res, next) {
     try {
-
         let Query = req.query
 
         if (Object.keys(Query).length !== 0) {
 
-
-
             const Blog = await BlogsModel.findOne({ authorId: req.token.payload.authorId, ...Query })
             if (!Blog) {
                 return res.status(404).send({ status: false, message: "blog are not found" })
-
             }
 
             if (Blog.authorId.toString() !== req.token.payload.authorId) {
@@ -71,12 +59,12 @@ const auth = async function (req, res, next) {
 
         let BlogId = req.params.blogId;
 
-        const isblog = await BlogsModel.findOne({ _id: BlogId, isDeleted: false })
-        if (!isblog) {
+        const IsBlog = await BlogsModel.findOne({ _id: BlogId, isDeleted: false })
+        if (!IsBlog) {
             return res.status(404).send({ status: false, message: "blog are not found" })
         }
 
-        if (isblog.authorId.toString() !== req.token.payload.authorId) {
+        if (IsBlog.authorId.toString() !== req.token.payload.authorId) {
 
             return res.status(400).send({ status: false, message: "you have not access for authorization" });
         }
