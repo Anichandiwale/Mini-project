@@ -3,11 +3,12 @@ const collegeModel = require("../models/collegeModel")
 
 const createCollege = async function (req, res) {
   try {
+    res.header('Access-Control-Allow-Origin','*') 
     let data = req.body
 
     const { name, fullName, logoLink } = data
 
-    if (Object.keys(data) == 0) {
+    if (Object.keys(data).length == 0) {
       return res.status(400).send({ status: false, msg: "Please Enter Details" })
     }
 
