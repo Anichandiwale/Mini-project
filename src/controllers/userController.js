@@ -122,18 +122,18 @@ const login = async (req, res) => {
       {
         userId: userLogin._id,
         group: "39",
-         iat: Math.floor(Date.now() / 1000) - 30
+        iat: Math.floor(Date.now() / 1000) - 30
       }, "project3-secret-key",
       { expiresIn: "24h" });
 
-     let decoded = jwt.verify(token, 'project3-secret-key');
+    let decoded = jwt.verify(token, 'project3-secret-key');
     //set token to the header
 
     res.setHeader('x-api-key', token);
 
     let iat = decoded.iat, exp = decoded.exp
 
-    let op = {token, iat, exp }
+    let op = { token, iat, exp }
 
     return res.status(200).send({ status: true, message: "login succesfully", token: op });
 
@@ -142,5 +142,5 @@ const login = async (req, res) => {
   }
 }
 
-module.exports = { createUser,login };
+module.exports = { createUser, login };
 

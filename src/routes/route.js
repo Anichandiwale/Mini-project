@@ -6,43 +6,44 @@ const commonMiddleware = require("../middleware/commonMiddleware")
 const getBookscontroller = require("../controllers/getBookController")
 const reviewController = require('../controllers/reviewController')
 
-// ------------POST REGISTER-----------------
+// ------------POST REGISTER API------------------------//
 
 router.post("/register",userController.createUser)
 
-// ---------------POST LOGIN------------------
+// ---------------POST LOGIN API------------------------//
 
 router.post("/login",userController.login)
 
-// --------------POST BOOKS-------------------
+// --------------POST BOOKS API--------------------------//
 
 router.post("/books",commonMiddleware.Authentication ,bookController.createBook)
 
-// ------------GET BOOKS-----------------
+// ------------GET BOOKS API-----------------------------//
 
 router.get("/books",commonMiddleware.Authentication, getBookscontroller.getBooks)
 
-// -------------GET BOOKSBYID------------------------
+// -------------GET BOOKSBYID API------------------------//
 
 router.get("/books/:bookId", commonMiddleware.Authentication, getBookscontroller.getBooksById)
 
-// -------------UPDATE-------------------------------
+// -------------UPDATE BOOKS API--------------------------//
 
 router.put("/books/:bookId"  ,commonMiddleware.Authentication, commonMiddleware.Authorisation, bookController.updateBook)
 
-// -------------DELETE--------------------------------
+// -------------DELETE BOOKS API---------------------------//
 
 router.delete("/books/:bookId" ,commonMiddleware.Authentication, commonMiddleware.Authorisation  ,bookController.deletedBooks)
 
-//----------Post book review--------------------------
+//----------POST REVIEW BOOKS API--------------------------//
 
 router.post('/books/:bookId/review', reviewController.createReview)
 
-// ---------------UPDATE REVIEW-------------------------
+// ---------------UPDATE REVIEW BOOKS API-------------------//
 
 router.put("/books/:bookId/review/:reviewId" , reviewController.updateReview)
 
-//----------------DELETE REVIEW---------------------------
+//----------------DELETE REVIEW BOOKS API--------------------//
+
 router.delete("/books/:bookId/review/:reviewId" , reviewController.deleteReview)
 
 
