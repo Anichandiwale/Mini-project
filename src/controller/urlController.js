@@ -12,21 +12,21 @@ const createShortUrl = async function (req, res) {
     // check for correct longUrl Axios
     const options = {
       method: "get",
-      url: longUrl,
+      url: longUrl
     };
 
-    const siteData = await axios(options)
-      .catch(function (error) {
-
-        if (error) {
-          return res
-            .status(400)
-            .send({ status: false, message: "no such url found" });
-        }
-      });
-    if (!siteData.data) return
-    console.log(siteData);
-
+ 
+    const siteData = await axios(options).catch(function (error) {
+      if (error) {
+        return res
+          .status(400)
+          .send({ status: false, message: "no such url found" });
+      }
+    });
+    
+    
+    // console.log(siteData);
+    if (!siteData.data) return;
 
     // checking shortUrl in dataBase
     const existedUrl = await urlModel
