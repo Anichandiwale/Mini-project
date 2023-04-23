@@ -3,7 +3,9 @@ const collegeModel = require("../models/collegeModel")
 
 const createCollege = async function (req, res) {
   try {
-    res.header('Access-Control-Allow-Origin','*') 
+
+    res.header('Access-Control-Allow-Origin','*')
+
     let data = req.body
 
     const { name, fullName, logoLink } = data
@@ -38,6 +40,7 @@ const createCollege = async function (req, res) {
       return res.status(400).send({ status: false, msg: "Please provide logoLink" })
     }
     if (!(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/).test(logoLink)) {
+      
       return res.status(400).send({ status: false, msg: "please provide valid logoLink " })
     }
 
