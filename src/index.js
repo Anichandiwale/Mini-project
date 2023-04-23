@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const multer = require('multer')
 const bodyParser = require("body-parser");
-const { default: mongoose } = require("mongoose");
+const  mongoose  = require("mongoose");
 const routes = require("./routes/route.js");
 
 app.use(bodyParser.json());

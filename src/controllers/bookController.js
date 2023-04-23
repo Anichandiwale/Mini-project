@@ -62,6 +62,7 @@ const createBook = async function (req, res) {
         if (!ISBN) { return res.status(400).send({ status: false, msg: "ISBN must be required !" }) }
 
         if (!(/^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/
+
         ).test(ISBN.trim())) { return res.status(400).send({ status: false, msg: " provide 13 digit ISBN number" }) }
 
         let ISBNVerify = await bookModel.findOne({ ISBN: ISBN })
@@ -75,12 +76,15 @@ const createBook = async function (req, res) {
         if (!subcategory) { return res.status(400).send({ status: false, msg: "subcategory must be required !" }) }
 
         if (!releasedAt) { return res.status(400).send({ status: false, msg: "releasedAt must be required !" }) }
+
         // Aws codes here
         let  files= req.files
+
         if(!(files && files.length)){
             return res.status(401).send({status:"false", msg: "Found Error in Uploading files..."})
         }
         let fileUploaded = await uploadFile(files[0])
+        
         data.bookCover = fileUploaded
 
         let savedata = await bookModel.create(data)
