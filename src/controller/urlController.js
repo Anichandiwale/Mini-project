@@ -15,7 +15,7 @@ const createShortUrl = async function (req, res) {
       url: longUrl
     };
 
- 
+
     const siteData = await axios(options).catch(function (error) {
       if (error) {
         return res
@@ -23,8 +23,8 @@ const createShortUrl = async function (req, res) {
           .send({ status: false, message: "no such url found" });
       }
     });
-    
-    
+
+
     // console.log(siteData);
     if (!siteData.data) return;
 
@@ -34,7 +34,7 @@ const createShortUrl = async function (req, res) {
       .lean()
       .select({ _id: 0, __v: 0 });
     if (existedUrl) {
-      await redis.SETEX_ASYNC(longUrl, 6, JSON.stringify(existedUrl));
+      await redis.SETEX_ASYNC(longUrl, 60*60, JSON.stringify(existedUrl));
       return res
         .status(200)
         .send({ status: true, message: "already shorted", data: existedUrl });
@@ -47,8 +47,8 @@ const createShortUrl = async function (req, res) {
     data.shortUrl = shortUrl;
     data.urlCode = urlCode;
 
-    await redis.SETEX_ASYNC(longUrl, 5, JSON.stringify(data));
-    await redis.SETEX_ASYNC(urlCode, 5, longUrl);
+    await redis.SETEX_ASYNC(longUrl, 60*60, JSON.stringify(data));
+    await redis.SETEX_ASYNC(urlCode, 60*60, longUrl);
 
     // creating short url
     await urlModel.create(data);
@@ -74,7 +74,7 @@ const getUrl = async function (req, res) {
         .send({ status: false, message: "no longUrl found" });
     }
 
-    await redis.SETEX_ASYNC(urlCode, 5, shortUrl.longUrl);
+    await redis.SETEX_ASYNC(urlCode, 60*60, shortUrl.longUrl);
 
     return res.status(302).redirect(shortUrl.longUrl);
   } catch (err) {
